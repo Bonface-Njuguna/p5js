@@ -1,0 +1,135 @@
+var xposR = 10;
+var yposR = 520;
+var xspeedR = 5;
+var xposG = 350;
+var yposG = 520;
+var xspeedG = 5;
+var xposB =660;
+var yposB = 520;
+var xspeedB = 5;
+var ellipsexpos = 300;
+var ellipseypos = 65;
+var speedEllipse = 5;
+var score = 0;
+var timer = 60;
+var lives
+
+function setup(){
+	createCanvas(700,580);
+}
+
+function draw(){
+	background (0);					//bg color
+	fill (255,0,0);					//fill color of rectangle
+	rect (xposR,yposR,120,40);			//draw rectangle
+
+	if (xposR == width){				//constrain of red brick
+		xspeedR=-5;
+	}
+	if (xposR == 0){											
+		xspeedR=+5;
+	}
+
+	fill (0,255,0);
+	rect (xposG,yposG,120,40);
+	if (xposG == 0){				//constrain of green brick
+		xspeedG =+5;
+	}
+	if (xposG == width){
+		xspeedG=-5;
+	}
+	
+	fill (0,0,255);
+	rect (xposB,yposB,120,40);
+	if (xposB == 0){				//constrain of blue brick
+		xspeedB =+5;
+	}
+	if (xposB == width){
+		xspeedB=-5;
+	}
+
+	xposR+=xspeedR;
+	xposG+=xspeedG;
+	xposB+=xspeedB;
+
+	var colorOfXposR = get(xposR + 120/2, yposR + 40/2);
+	var colorOfXposG = get(xposG + 120/2, yposG + 40/2);
+	var colorOfXposB= get(xposB + 120/2, yposB +40/2);
+	fill(255, 255, 255);
+	ellipse (ellipsexpos,ellipseypos,30,30);
+console.log(color);
+	
+
+	if (keyIsDown(UP_ARROW)){
+		ellipseypos=-1;
+	}
+	if (keyIsDown(DOWN_ARROW)){
+		ellipseypos+=speedEllipse;
+	}
+
+	if (keyIsDown(RIGHT_ARROW)){
+		ellipsexpos+=5;
+	}
+	if (ellipsexpos>=700){
+		ellipsexpos=1
+	}
+
+	if (keyIsDown(LEFT_ARROW)){
+		ellipsexpos-=5;
+	}
+	if (ellipsexpos<=1){
+		ellipsexpos=700
+	}
+
+	ellipseypos+=speedEllipse;
+
+	if (ellipseypos>=height){
+		ellipseypos=0;
+	}
+
+	var colorCicleEdge1 = get(ellipsexpos > 0? (ellipsexpos + 28): (ellipsexpos - 28) , ellipseypos)
+	if (colorOfXposG.join() === colorCicleEdge1.join()){
+		score= score+10;
+	}
+
+	var colorCicleEdge1 = get(ellipsexpos > 0? (ellipsexpos + 28): (ellipsexpos - 28) , ellipseypos)
+	if (colorOfXposB.join() === colorCicleEdge1.join()){
+		score= score+5;
+	}
+
+	var colorCicleEdge1 = get(ellipsexpos > 0? (ellipsexpos + 28): (ellipsexpos - 28) , ellipseypos)
+	if (colorOfXposR.join() === colorCicleEdge1.join()){
+		score= score-5;
+	}
+
+		//display timer
+	textSize (15);
+	fill (255,255,0);
+	text ("timer:"+timer,600,20);
+
+	if (frameCount % 60 == 0){
+		timer -=1;
+		}
+
+			//display scores
+	textSize (15);
+	fill (255,255,0);
+	text ("score:"+score,0,20);
+
+
+	if (timer <=0){
+		background (0,255,0);
+		textSize (20);
+		fill (255,255,255);
+		text ("GAME OVER,PLEASE PRESS F5 TO TRY AGAIN",50,260);
+		timer = 0;
+		}
+
+	if(score >=500){
+		background(100);
+		fill(0,255,0);
+		textSize(20);
+		text("CONGRATS,YOU HAVE PASSED THIS LEVEL,score is:"+score,20,250);
+		score = 0;
+	}
+}
